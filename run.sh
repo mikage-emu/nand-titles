@@ -21,4 +21,9 @@ cd mii
 ./run.sh
 cd ..
 
+echo "Create version information..."
+cd nver
+./run.sh
+cd ..
+
 echo "All done"
