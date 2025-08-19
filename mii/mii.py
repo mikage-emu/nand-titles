@@ -128,7 +128,7 @@ def Build(in_path, out_path):
 
                 if not os.path.exists(image_path):
                     continue
-                
+
                 extra = open(extra_path, "rt")
                 dic = {}
                 for line_ in extra:
@@ -323,7 +323,7 @@ def Extract(in_path, out_path):
             redirect = l1offsets[i] >> 22
 
             max_size = max(max_size, size)
-            
+
             if size == 0:
                 if redirect != 0:
                     redirects.write("%d->%d\n" % (i, redirect - 1))
@@ -371,7 +371,7 @@ def Extract(in_path, out_path):
                             value = int(data[addr])
                         elif bpp[format] == 16:
                             value = int(data[addr * 2]) + (int(data[addr * 2 + 1]) << 8)
-                        
+
                         color = decoder[format](value)
                         im.putpixel((x, y), color)
 
@@ -448,12 +448,12 @@ def Extract(in_path, out_path):
                     size -= 2
                     if magic != 4:
                         raise Exception("Wrong index list magic")
-                    
+
                     index_count, = struct.unpack("<H", f.read(2))
                     size -= 2
                     index_list = [struct.unpack("<B", f.read(1))[0] for _ in range(index_count)]
                     size -= index_count
-                    
+
                     if section == 6:
                         out = open(os.path.join(root, "%d"%section, "%d_extra.txt"%i), "wt")
                         extra_count = index_count // 3
@@ -464,7 +464,7 @@ def Extract(in_path, out_path):
                             out.write("%d-%d,%d-%d\n" % (xx >> 4, xx & 0xF, yy >> 4, yy & 0xF))
 
                         out.close()
-                        
+
 
                 if size >= 4 or size < 0:
                     raise Exception("Wrong size")
@@ -497,7 +497,7 @@ def Extract(in_path, out_path):
                         else:
                             out.write(" %d/%d/%d"%(vi, ti, ni))
                 out.close()
-       
+
         if max_size != bufsize:
             raise Exception("wrong bufsize")
 
@@ -506,25 +506,17 @@ def Extract(in_path, out_path):
 
 def main():
     def printHelp():
-        print("Usage: {} [-x|-c] INPUT OUTPUT".format(sys.argv[0]))
+        print("Usage: {} -c INPUT".format(sys.argv[0]))
         exit(-1)
 
-    if len(sys.argv) < 4:
+    if len(sys.argv) < 3:
         printHelp()
 
     inPath = sys.argv[2]
-    outPath = sys.argv[3]
 
-    if sys.argv[1] == "-x":
-        d = tempfile.mkdtemp()
-        romfs.extractRomfs(inPath, d)
-        Extract(os.path.join(d, "CFL_Res.dat"), outPath)
-        shutil.rmtree(d)
-    elif sys.argv[1] == "-c":
-        d = tempfile.mkdtemp()
-        Build(inPath, os.path.join(d, "CFL_Res.dat"))
-        romfs.buildRomfs(d, outPath)
-        shutil.rmtree(d)
+    if sys.argv[1] == "-c":
+        os.makedirs("romfs", exist_ok=True)
+        Build(inPath, "romfs/CFL_Res.dat")
     else:
         printHelp()
 

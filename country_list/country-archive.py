@@ -32,7 +32,7 @@ def loadFromArchive(path):
 
 def writeToArchive(path, archive):
     for regionCode in ["CN", "EU", "JP", "KR", "TW", "US"]:
-        os.mkdir(os.path.join(path, regionCode))
+        os.makedirs(os.path.join(path, regionCode), exist_ok=True)
 
     for x in archive["regions"]:
         region.writeRegionToArchive(path, x)
@@ -44,31 +44,17 @@ def writeToArchive(path, archive):
 
 def main():
     def printHelp():
-        print("Usage: {} [-x|-c] INPUT OUTPUT".format(sys.argv[0]))
+        print("Usage: {} -c INPUT".format(sys.argv[0]))
         exit(-1)
 
-    if len(sys.argv) < 4:
+    if len(sys.argv) < 3:
         printHelp()
 
     inPath = sys.argv[2]
-    outPath = sys.argv[3]
 
-    if sys.argv[1] == "-x":
-        d = tempfile.mkdtemp()
-        romfs.extractRomfs(inPath, d)
-        archive = loadFromArchive(d)
-        shutil.rmtree(d)
-        with open(outPath, "wt") as f:
-            json.dump(archive, f, indent = 2)
-    elif sys.argv[1] == "-c":
-        with open(inPath, "rt") as f:
-            archive = json.load(f)
-        d = tempfile.mkdtemp()
-        writeToArchive(d, archive)
-        romfs.buildRomfs(d, outPath)
-        shutil.rmtree(d)
-    else:
-        printHelp()
+    with open(inPath, "rt") as f:
+        archive = json.load(f)
+    writeToArchive("romfs", archive)
 
 
 if __name__ == "__main__":
