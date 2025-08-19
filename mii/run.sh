@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 echo "Create mii resource romfs..."
 ./mii.py -c custom

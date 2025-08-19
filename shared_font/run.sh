@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 echo "Create the images..."
 ./create_png.py

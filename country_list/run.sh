@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 echo "Create country list romfs..."
 ./country-archive.py -c country.json

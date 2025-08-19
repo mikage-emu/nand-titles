@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 echo "Create the Shared Font..."
 cd shared_font
