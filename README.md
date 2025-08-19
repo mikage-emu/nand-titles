@@ -1,11 +1,14 @@
-System Files Generator for Citra
+System files for 3DS emulation
 ==============
 
-Citra is an experimental open-source Nintendo 3DS emulator/debugger written in C++. Running certain games requires some system archives.
-Since the ones from the 3ds are copyrighted this creates custom system archives.
+This repository provides open-source replacements for some of the system files
+required for 3DS emulation. [Mikage](https://github.com/mikage-emu/mikage-dev/)
+uses this to set up a bootable filesystem tree ("NAND").
 
-Currently only the general shared font archive is supported.
+Originally based on https://github.com/B3n30/citra_system_archives.
 
-### Building
+## Building
 
-Requires Python 3, pypng, and Python Image Library
+This project is packaged in the `emulator_nand_files` recipe in
+[conan-3ds](https://github.com/mikage-emu/conan-3ds). Alternatively, manual
+building requires Python 3, pypng, Python Image Library, and makerom.
